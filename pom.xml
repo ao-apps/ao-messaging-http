@@ -32,7 +32,7 @@ along with ao-messaging-http.  If not, see <http://www.gnu.org/licenses />.
 
 	<groupId>com.aoindustries</groupId>
 	<artifactId>ao-messaging-http</artifactId>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>1.0.1</version>
 	<packaging>jar</packaging>
 
 	<name>AO Messaging HTTP</name>
@@ -44,7 +44,7 @@ along with ao-messaging-http.  If not, see <http://www.gnu.org/licenses />.
 		<connection>scm:git:git://github.com/aoindustries/ao-messaging-http.git</connection>
 		<developerConnection>scm:git:git@github.com:aoindustries/ao-messaging-http.git</developerConnection>
 		<url>http://github.com/aoindustries/ao-messaging-http</url>
-		<tag>HEAD</tag>
+		<tag>ao-messaging-http-1.0.1</tag>
 	</scm>
 
 	<profiles>
