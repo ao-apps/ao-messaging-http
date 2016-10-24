@@ -71,7 +71,7 @@ along with ao-messaging-http.  If not, see <http://www.gnu.org/licenses />.
 		<ul>
 			<li><a target="_top" href="https://www.aoindustries.com/ao-messaging/http/">Project Home</a></li>
 			<li><a target="_top" href="https://www.aoindustries.com/ao-messaging/http/apidocs/">API Docs</a></li>
-			<li><a target="_top" href="https://search.maven.org/#search|gav|1|g:%22com.aoindustries%22%20AND%20a:%22ao-messaging-http%22">Maven Central Repository</a></li>
+			<li><a target="_top" href="https://search.maven.org/#search%7Cgav%7C1%7Cg:%22com.aoindustries%22%20AND%20a:%22ao-messaging-http%22">Maven Central Repository</a></li>
 			<li><a target="_top" href="https://github.com/aoindustries/ao-messaging-http">GitHub</a></li>
 		</ul>
 	</div>
