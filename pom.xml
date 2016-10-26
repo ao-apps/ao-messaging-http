@@ -50,7 +50,7 @@ along with ao-messaging-http.  If not, see <http://www.gnu.org/licenses />.
 	</properties>
 
 	<name>AO Messaging HTTP</name>
-	<url>${project.parent.url}http/</url>
+	<url>https://www.aoindustries.com${bookPath}/</url><!-- Can't inherit due to multi-module -->
 	<description>Asynchronous bidirectional messaging over HTTP.</description>
 	<inceptionYear>2014</inceptionYear>
 
