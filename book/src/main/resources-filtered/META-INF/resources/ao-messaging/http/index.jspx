@@ -41,7 +41,7 @@ along with ao-messaging-http.  If not, see <http://www.gnu.org/licenses />.
 		<core:child book="/ao-messaging/http/client-js" page="/index.jspx" />
 		<core:child book="/ao-messaging/http/servlet" page="/index.jspx" />
 		<p>
-			@{description.html}
+			@{documented.description}
 		</p>
 		<section:section label="Project Links">
 			<ul>
