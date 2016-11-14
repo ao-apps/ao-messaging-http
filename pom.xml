@@ -26,8 +26,9 @@ along with ao-messaging-http.  If not, see <http://www.gnu.org/licenses />.
 
 	<parent>
 		<groupId>com.aoindustries</groupId>
-		<artifactId>ao-messaging</artifactId>
-		<version>1.0.2-SNAPSHOT</version>
+		<artifactId>ao-oss-parent</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../../ao-oss-parent/pom.xml</relativePath>
 	</parent>
 
 	<groupId>com.aoindustries</groupId>
@@ -36,6 +37,8 @@ along with ao-messaging-http.  If not, see <http://www.gnu.org/licenses />.
 	<packaging>jar</packaging>
 
 	<properties>
+		<javadoc.breadcrumbs><![CDATA[<a target="_top" href="https://aoindustries.com/ao-messaging/">AO Messaging</a>
+/ <a target="_top" href="${project.url}">${shortTitle}</a>]]></javadoc.breadcrumbs>
 		<shortTitle>HTTP</shortTitle>
 		<!-- TODO: use project.url in modules list here and in all other pom.xml -->
 		<javadoc.modules><![CDATA[<div style="float:left; margin: 0 1em">
@@ -49,7 +52,7 @@ along with ao-messaging-http.  If not, see <http://www.gnu.org/licenses />.
 	</properties>
 
 	<name>AO Messaging HTTP</name>
-	<url>https://aoindustries.com/${project.parent.artifactId}/http/</url>
+	<url>https://aoindustries.com/ao-messaging/http/</url>
 	<description>Asynchronous bidirectional messaging over HTTP.</description>
 	<inceptionYear>2014</inceptionYear>
 
