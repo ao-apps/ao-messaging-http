@@ -76,9 +76,9 @@ along with ao-messaging-http.  If not, see <http://www.gnu.org/licenses />.
 							<configuration>
 								<links>
 									<link>https://aoindustries.com/ao-concurrent/apidocs/</link>
+									<link>https://aoindustries.com/ao-lang/apidocs/</link>
 									<link>https://aoindustries.com/ao-messaging/api/apidocs/</link>
 									<link>https://aoindustries.com/ao-messaging/base/apidocs/</link>
-									<link>https://aoindustries.com/aocode-public/apidocs/</link>
 								</links>
 							</configuration>
 						</plugin>
@@ -92,7 +92,12 @@ along with ao-messaging-http.  If not, see <http://www.gnu.org/licenses />.
 		<dependency>
 			<groupId>com.aoindustries</groupId>
 			<artifactId>ao-concurrent</artifactId>
-			<version>1.0.2</version>
+			<version>1.0.3-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.aoindustries</groupId>
+			<artifactId>ao-lang</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.aoindustries</groupId>
@@ -103,11 +108,6 @@ along with ao-messaging-http.  If not, see <http://www.gnu.org/licenses />.
 			<groupId>com.aoindustries</groupId>
 			<artifactId>ao-messaging-base</artifactId>
 			<version>1.0.3-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.aoindustries</groupId>
-			<artifactId>aocode-public</artifactId>
-			<version>1.8.3</version>
 		</dependency>
 	</dependencies>
 </project>
