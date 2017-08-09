@@ -1,6 +1,6 @@
 /*
  * ao-messaging-http - Asynchronous bidirectional messaging over HTTP.
- * Copyright (C) 2014, 2015, 2016  AO Industries, Inc.
+ * Copyright (C) 2014, 2015, 2016, 2017  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -28,9 +28,11 @@ import com.aoindustries.messaging.MessageType;
 import com.aoindustries.messaging.Socket;
 import com.aoindustries.messaging.base.AbstractSocket;
 import com.aoindustries.security.Identifier;
+import com.aoindustries.tempfiles.TempFileContext;
 import com.aoindustries.util.AtomicSequence;
 import com.aoindustries.util.Sequence;
 import com.aoindustries.util.concurrent.Callback;
+import com.aoindustries.util.concurrent.Executor;
 import com.aoindustries.util.concurrent.Executors;
 import com.aoindustries.xml.XmlUtils;
 import java.io.DataOutputStream;
@@ -48,6 +50,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
@@ -140,77 +143,110 @@ public class HttpSocket extends AbstractSocket {
 							if(onError!=null) onError.call(new SocketException("Socket is closed"));
 						} else {
 							// Handle incoming messages in a Thread, can try nio later
-							executors.getUnbounded().submit(
+							final Executor unbounded = executors.getUnbounded();
+							unbounded.submit(
 								new Runnable() {
 									@Override
 									public void run() {
 										try {
-											while(!isClosed()) {
-												HttpURLConnection receiveConn = null;
-												synchronized(lock) {
-													// Wait until a connection is ready
-													while(receiveConn==null) {
-														if(isClosed()) return;
-														receiveConn = HttpSocket.this.receiveConn;
-														if(receiveConn==null) {
-															// No receive connection - kick-out an empty set of messages
-															Collection<? extends Message> kicker = Collections.emptyList();
-															sendMessagesImpl(kicker);
-															lock.wait();
-														}
-													}
-												}
-												try {
-													// Get response
-													int responseCode = receiveConn.getResponseCode();
-													if(responseCode != 200) throw new IOException("Unexpect response code: " + responseCode);
-													if(DEBUG) System.out.println("DEBUG: HttpSocket: receive: got response");
-													DocumentBuilder builder = socketContext.builderFactory.newDocumentBuilder();
-													Element document = builder.parse(receiveConn.getInputStream()).getDocumentElement();
-													if(!"messages".equals(document.getNodeName())) throw new IOException("Unexpected root node name: " + document.getNodeName());
-													// Add all messages to the inQueue by sequence to handle out-of-order messages
-													List<Message> messages;
-													synchronized(inQueue) {
-														for(Element messageElem : XmlUtils.iterableChildElementsByTagName(document, "message")) {
-															// Get the sequence
-															Long seq = Long.parseLong(messageElem.getAttribute("seq"));
-															// Get the type
-															MessageType type = MessageType.getFromTypeChar(messageElem.getAttribute("type").charAt(0));
-															// Get the message string
-															Node firstChild = messageElem.getFirstChild();
-															String encodedMessage;
-															if(firstChild == null) {
-																encodedMessage = "";
-															} else {
-																if(!(firstChild instanceof Text)) throw new IllegalArgumentException("Child of message is not a Text node");
-																encodedMessage = ((Text)firstChild).getTextContent();
-															}
-															// Decode and add
-															if(inQueue.put(seq, type.decode(encodedMessage)) != null) {
-																throw new IOException("Duplicate incoming sequence: " + seq);
-															}
-														}
-														// Gather as many messages that have been delivered in-order
-														messages = new ArrayList<Message>(inQueue.size());
-														while(true) {
-															Message message = inQueue.remove(inSeq);
-															if(message != null) {
-																messages.add(message);
-																inSeq++;
-															} else {
-																// Break in the sequence
-																break;
-															}
-														}
-													}
-													if(!messages.isEmpty()) callOnMessages(Collections.unmodifiableList(messages));
-												} finally {
+											TempFileContext tempFileContext = new TempFileContext();
+											try {
+												while(!isClosed()) {
+													HttpURLConnection receiveConn = null;
 													synchronized(lock) {
-														if(receiveConn != HttpSocket.this.receiveConn) throw new AssertionError();
-														HttpSocket.this.receiveConn = null;
-														lock.notify();
+														// Wait until a connection is ready
+														while(receiveConn==null) {
+															if(isClosed()) return;
+															receiveConn = HttpSocket.this.receiveConn;
+															if(receiveConn==null) {
+																// No receive connection - kick-out an empty set of messages
+																Collection<? extends Message> kicker = Collections.emptyList();
+																sendMessagesImpl(kicker);
+																lock.wait();
+															}
+														}
+													}
+													try {
+														// Get response
+														int responseCode = receiveConn.getResponseCode();
+														if(responseCode != 200) throw new IOException("Unexpect response code: " + responseCode);
+														if(DEBUG) System.out.println("DEBUG: HttpSocket: receive: got response");
+														DocumentBuilder builder = socketContext.builderFactory.newDocumentBuilder();
+														Element document = builder.parse(receiveConn.getInputStream()).getDocumentElement();
+														if(!"messages".equals(document.getNodeName())) throw new IOException("Unexpected root node name: " + document.getNodeName());
+														// Add all messages to the inQueue by sequence to handle out-of-order messages
+														List<Message> messages;
+														synchronized(inQueue) {
+															for(Element messageElem : XmlUtils.iterableChildElementsByTagName(document, "message")) {
+																// Get the sequence
+																Long seq = Long.parseLong(messageElem.getAttribute("seq"));
+																// Get the type
+																MessageType type = MessageType.getFromTypeChar(messageElem.getAttribute("type").charAt(0));
+																// Get the message string
+																Node firstChild = messageElem.getFirstChild();
+																String encodedMessage;
+																if(firstChild == null) {
+																	encodedMessage = "";
+																} else {
+																	if(!(firstChild instanceof Text)) throw new IllegalArgumentException("Child of message is not a Text node");
+																	encodedMessage = ((Text)firstChild).getTextContent();
+																}
+																// Decode and add
+																if(inQueue.put(seq, type.decode(encodedMessage, tempFileContext)) != null) {
+																	throw new IOException("Duplicate incoming sequence: " + seq);
+																}
+															}
+															// Gather as many messages that have been delivered in-order
+															messages = new ArrayList<Message>(inQueue.size());
+															while(true) {
+																Message message = inQueue.remove(inSeq);
+																if(message != null) {
+																	messages.add(message);
+																	inSeq++;
+																} else {
+																	// Break in the sequence
+																	break;
+																}
+															}
+														}
+														if(!messages.isEmpty()) {
+															final Future<?> future = callOnMessages(Collections.unmodifiableList(messages));
+															if(tempFileContext.getSize() != 0) {
+																// Close temp file context, thus deleting temp files, once all messages have been handled
+																final TempFileContext closeMeNow = tempFileContext;
+																unbounded.submit(
+																	new Runnable() {
+																		@Override
+																		public void run() {
+																			try {
+																				try {
+																					// Wait until all messages handled
+																					future.get();
+																				} finally {
+																					// Delete temp files
+																					closeMeNow.close();
+																				}
+																			} catch(ThreadDeath td) {
+																				throw td;
+																			} catch(Throwable t) {
+																				logger.log(Level.SEVERE, null, t);
+																			}
+																		}
+																	}
+																);
+																tempFileContext = new TempFileContext();
+															}
+														}
+													} finally {
+														synchronized(lock) {
+															if(receiveConn != HttpSocket.this.receiveConn) throw new AssertionError();
+															HttpSocket.this.receiveConn = null;
+															lock.notify();
+														}
 													}
 												}
+											} finally {
+												tempFileContext.close();
 											}
 										} catch(Exception exc) {
 											if(!isClosed()) callOnError(exc);
