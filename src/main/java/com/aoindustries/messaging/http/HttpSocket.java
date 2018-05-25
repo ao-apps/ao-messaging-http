@@ -1,6 +1,6 @@
 /*
  * ao-messaging-http - Asynchronous bidirectional messaging over HTTP.
- * Copyright (C) 2014, 2015, 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2014, 2015, 2016, 2017, 2018  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -149,7 +149,13 @@ public class HttpSocket extends AbstractSocket {
 									@Override
 									public void run() {
 										try {
-											TempFileContext tempFileContext = new TempFileContext();
+											TempFileContext tempFileContext;
+											try {
+												tempFileContext = new TempFileContext();
+											} catch(SecurityException e) {
+												logger.log(Level.WARNING, null, e);
+												tempFileContext = null;
+											}
 											try {
 												while(!isClosed()) {
 													HttpURLConnection receiveConn = null;
@@ -211,7 +217,7 @@ public class HttpSocket extends AbstractSocket {
 														}
 														if(!messages.isEmpty()) {
 															final Future<?> future = callOnMessages(Collections.unmodifiableList(messages));
-															if(tempFileContext.getSize() != 0) {
+															if(tempFileContext != null && tempFileContext.getSize() != 0) {
 																// Close temp file context, thus deleting temp files, once all messages have been handled
 																final TempFileContext closeMeNow = tempFileContext;
 																unbounded.submit(
@@ -234,7 +240,12 @@ public class HttpSocket extends AbstractSocket {
 																		}
 																	}
 																);
-																tempFileContext = new TempFileContext();
+																try {
+																	tempFileContext = new TempFileContext();
+																} catch(SecurityException e) {
+																	logger.log(Level.WARNING, null, e);
+																	tempFileContext = null;
+																}
 															}
 														}
 													} finally {
@@ -246,7 +257,7 @@ public class HttpSocket extends AbstractSocket {
 													}
 												}
 											} finally {
-												tempFileContext.close();
+												if(tempFileContext != null) tempFileContext.close();
 											}
 										} catch(Exception exc) {
 											if(!isClosed()) callOnError(exc);
