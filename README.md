@@ -1,4 +1,4 @@
-# [<img src="ao-logo.png" alt="AO Logo" width="35" height="40">](https://aoindustries.com/) [AO Messaging](https://aoindustries.com/ao-messaging/) / [HTTP](https://aoindustries.com/ao-messaging/http/)
+# [<img src="ao-logo.png" alt="AO Logo" width="35" height="40">](https://github.com/aoindustries) [AO Messaging](https://github.com/aoindustries/ao-messaging) / [HTTP](https://github.com/aoindustries/ao-messaging-http)
 <p>
 	<a href="https://aoindustries.com/life-cycle#project-current-stable">
 		<img src="https://aoindustries.com/ao-badges/project-current-stable.svg" alt="project: current stable" />
@@ -31,9 +31,9 @@ Asynchronous bidirectional messaging over HTTP.
 * [GitHub](https://github.com/aoindustries/ao-messaging-http)
 
 ## Modules
-* [AO Messaging HTTP Client](https://aoindustries.com/ao-messaging/http/client/)
-* [AO Messaging HTTP Client JS](https://aoindustries.com/ao-messaging/http/client-js/)
-* [AO Messaging HTTP Servlet](https://aoindustries.com/ao-messaging/http/servlet/)
+* [AO Messaging HTTP Client](https://github.com/aoindustries/ao-messaging-http-client)
+* [AO Messaging HTTP Client JS](https://github.com/aoindustries/ao-messaging-http-client-js)
+* [AO Messaging HTTP Servlet](https://github.com/aoindustries/ao-messaging-http-servlet)
 
 ## Contact Us
 For questions or support, please [contact us](https://aoindustries.com/contact):
