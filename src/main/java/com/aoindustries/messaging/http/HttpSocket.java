@@ -1,6 +1,6 @@
 /*
  * ao-messaging-http - Asynchronous bidirectional messaging over HTTP.
- * Copyright (C) 2014, 2015, 2016, 2017, 2018  AO Industries, Inc.
+ * Copyright (C) 2014, 2015, 2016, 2017, 2018, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -76,7 +76,7 @@ public class HttpSocket extends AbstractSocket {
 	/** Server should normally respond within 60 seconds even if no data coming back. */
 	public static final int READ_TIMEOUT = 2 * 60 * 1000;
 
-	private final Map<Long,Message> inQueue = new HashMap<Long,Message>();
+	private final Map<Long,Message> inQueue = new HashMap<>();
 	private long inSeq = 1; // Synchronized on inQueue
 
 	private final Object lock = new Object();
@@ -203,7 +203,7 @@ public class HttpSocket extends AbstractSocket {
 																}
 															}
 															// Gather as many messages that have been delivered in-order
-															messages = new ArrayList<Message>(inQueue.size());
+															messages = new ArrayList<>(inQueue.size());
 															while(true) {
 																Message message = inQueue.remove(inSeq);
 																if(message != null) {
@@ -288,7 +288,7 @@ public class HttpSocket extends AbstractSocket {
 			// Enqueue asynchronous write
 			boolean isFirst;
 			if(outQueue == null) {
-				outQueue = new LinkedList<Message>();
+				outQueue = new LinkedList<>();
 				isFirst = true;
 			} else {
 				isFirst = false;
@@ -303,7 +303,7 @@ public class HttpSocket extends AbstractSocket {
 						@Override
 						public void run() {
 							try {
-								final List<Message> messages = new ArrayList<Message>();
+								final List<Message> messages = new ArrayList<>();
 								while(!isClosed()) {
 									// Get all of the messages until the queue is empty
 									synchronized(lock) {
@@ -323,8 +323,7 @@ public class HttpSocket extends AbstractSocket {
 									// Build request bytes
 									AoByteArrayOutputStream bout = new AoByteArrayOutputStream();
 									try {
-										DataOutputStream out = new DataOutputStream(bout);
-										try {
+										try (DataOutputStream out = new DataOutputStream(bout)) {
 											out.writeBytes("action=messages&id=");
 											out.writeBytes(getId().toString());
 											if(DEBUG) System.err.println("DEBUG: HttpSocket: sendMessagesImpl: run: id=" + getId().toString());
@@ -349,8 +348,6 @@ public class HttpSocket extends AbstractSocket {
 												out.write('=');
 												out.writeBytes(URLEncoder.encode(message.encodeAsString(), ENCODING));
 											}
-										} finally {
-											out.close();
 										}
 									} finally {
 										bout.close();
