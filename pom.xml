@@ -36,7 +36,6 @@ along with ao-messaging-http.  If not, see <http://www.gnu.org/licenses />.
 		<javadoc.breadcrumbs><![CDATA[<a target="_top" href="https://aoindustries.com/ao-messaging/">AO Messaging</a>
 / <a target="_top" href="${project.url}">${shortTitle}</a>]]></javadoc.breadcrumbs>
 		<shortTitle>HTTP</shortTitle>
-		<!-- TODO: use project.url in modules list here and in all other pom.xml -->
 		<javadoc.modules><![CDATA[<div style="float:left; margin: 0 1em">
 			<h2 style="margin-top: 0em">Modules</h2>
 			<ul>
