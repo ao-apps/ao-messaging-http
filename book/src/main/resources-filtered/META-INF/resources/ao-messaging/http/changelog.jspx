@@ -36,7 +36,7 @@ along with ao-messaging-http.  If not, see <http://www.gnu.org/licenses />.
 		shortTitle="Changelog"
 		tocLevels="1"
 		datePublished="2016-10-29T20:41:14-0500"
-		dateModified="2019-08-16T23:29:51-0500"
+		dateModified="2019-08-17T01:21:35-0500"
 	>
 		<!-- The current snapshot, unreleased version -->
 		<c:set var="version" value="@{com.aoindustries:ao-messaging-http:pom.version}" />
@@ -54,6 +54,7 @@ along with ao-messaging-http.  If not, see <http://www.gnu.org/licenses />.
 			>
 				<ul>
 					<li>Using <code>java.nio.charset.StandardCharsets</code> instead of <code>"UTF-8"</code>.</li>
+					<li>No longer catching all <code>Throwable</code>.</li>
 				</ul>
 			</changelog:release>
 		</c:if>

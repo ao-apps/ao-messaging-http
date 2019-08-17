@@ -52,6 +52,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -234,10 +235,8 @@ public class HttpSocket extends AbstractSocket {
 																					// Delete temp files
 																					closeMeNow.close();
 																				}
-																			} catch(ThreadDeath td) {
-																				throw td;
-																			} catch(Throwable t) {
-																				logger.log(Level.SEVERE, null, t);
+																			} catch(RuntimeException | IOException | InterruptedException | ExecutionException e) {
+																				logger.log(Level.SEVERE, null, e);
 																			}
 																		}
 																	}
