@@ -42,6 +42,8 @@ import java.net.HttpURLConnection;
 import java.net.SocketException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -69,7 +71,7 @@ public class HttpSocket extends AbstractSocket {
 
 	public static final String PROTOCOL = "http";
 
-	private static final String ENCODING = "UTF-8";
+	public static final Charset ENCODING = StandardCharsets.UTF_8;
 
 	private static final int CONNECT_TIMEOUT = 15 * 1000;
 
@@ -346,7 +348,7 @@ public class HttpSocket extends AbstractSocket {
 												out.writeBytes("&m");
 												out.writeBytes(iString);
 												out.write('=');
-												out.writeBytes(URLEncoder.encode(message.encodeAsString(), ENCODING));
+												out.writeBytes(URLEncoder.encode(message.encodeAsString(), ENCODING.name()));
 											}
 										}
 									} finally {
