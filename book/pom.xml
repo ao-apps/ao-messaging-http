@@ -35,8 +35,6 @@ along with ao-messaging-http.  If not, see <http://www.gnu.org/licenses />.
 	<properties>
 		<!-- These values are copied from the project being documented -->
 		<documented.artifactId>ao-messaging-http</documented.artifactId>
-		<documented.javaVersion>1.8</documented.javaVersion>
-		<documented.javac.link.javaApi>${javac.link.javaApi.jdk8}</documented.javac.link.javaApi>
 		<documented.name>AO Messaging HTTP</documented.name>
 		<documented.shortTitle>HTTP</documented.shortTitle>
 		<documented.description>Asynchronous bidirectional messaging over HTTP.</documented.description>
