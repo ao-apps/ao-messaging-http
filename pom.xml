@@ -59,6 +59,11 @@ along with ao-messaging-http.  If not, see <http://www.gnu.org/licenses />.
 		<tag>HEAD</tag>
 	</scm>
 
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/aoindustries/ao-messaging-http/issues</url>
+	</issueManagement>
+
 	<profiles>
 		<profile>
 			<id>release</id>
