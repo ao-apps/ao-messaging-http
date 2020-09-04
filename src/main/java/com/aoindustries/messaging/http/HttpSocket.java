@@ -52,7 +52,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -67,8 +66,6 @@ import org.w3c.dom.Text;
 public class HttpSocket extends AbstractSocket {
 
 	private static final Logger logger = Logger.getLogger(HttpSocket.class.getName());
-
-	private static final boolean DEBUG = false;
 
 	public static final String PROTOCOL = "http";
 
@@ -116,14 +113,14 @@ public class HttpSocket extends AbstractSocket {
 		try {
 			super.close();
 		} finally {
-			logger.log(Level.FINE, "Notifying all on lock");
+			logger.log(Level.FINEST, "Notifying all on lock");
 			synchronized(lock) {
 				lock.notifyAll();
 			}
-			logger.log(Level.FINE, "Notifying all on lock completed");
-			logger.log(Level.FINE, "Calling executor.dispose()");
+			logger.log(Level.FINEST, "Notifying all on lock completed");
+			logger.log(Level.FINER, "Calling executor.dispose()");
 			executors.dispose();
-			logger.log(Level.FINE, "executor.dispose() finished");
+			logger.log(Level.FINER, "executor.dispose() finished");
 		}
 	}
 
@@ -133,14 +130,27 @@ public class HttpSocket extends AbstractSocket {
 	}
 
 	@Override
+	@SuppressWarnings({"UseSpecificCatch", "TooBroadCatch"})
 	protected void startImpl(
-		final Callback<? super Socket> onStart,
-		final Callback<? super Exception> onError
+		Callback<? super Socket> onStart,
+		Callback<? super Throwable> onError
 	) throws IllegalStateException {
 		executors.getUnbounded().submit(() -> {
 			try {
 				if(isClosed()) {
-					if(onError!=null) onError.call(new SocketException("Socket is closed"));
+					SocketException e = new SocketException("Socket is closed");
+					if(onError != null) {
+						logger.log(Level.FINE, "Calling onError", e);
+						try {
+							onError.call(e);
+						} catch(ThreadDeath td) {
+							throw td;
+						} catch(Throwable t) {
+							logger.log(Level.SEVERE, null, t);
+						}
+					} else {
+						logger.log(Level.FINE, "No onError", e);
+					}
 				} else {
 					// Handle incoming messages in a Thread, can try nio later
 					final Executor unbounded = executors.getUnbounded();
@@ -149,8 +159,10 @@ public class HttpSocket extends AbstractSocket {
 							TempFileContext tempFileContext;
 							try {
 								tempFileContext = new TempFileContext();
-							} catch(SecurityException e) {
-								logger.log(Level.WARNING, null, e);
+							} catch(ThreadDeath td) {
+								throw td;
+							} catch(Throwable t) {
+								logger.log(Level.WARNING, null, t);
 								tempFileContext = null;
 							}
 							try {
@@ -172,8 +184,8 @@ public class HttpSocket extends AbstractSocket {
 									try {
 										// Get response
 										int responseCode = _receiveConn.getResponseCode();
+										logger.log(Level.FINEST, "receive: Got response: {0}", responseCode);
 										if(responseCode != 200) throw new IOException("Unexpect response code: " + responseCode);
-										if(DEBUG) System.out.println("DEBUG: HttpSocket: receive: got response");
 										DocumentBuilder builder = socketContext.builderFactory.newDocumentBuilder();
 										Element document = builder.parse(_receiveConn.getInputStream()).getDocumentElement();
 										if(!"messages".equals(document.getNodeName())) throw new IOException("Unexpected root node name: " + document.getNodeName());
@@ -223,17 +235,30 @@ public class HttpSocket extends AbstractSocket {
 															// Wait until all messages handled
 															future.get();
 														} finally {
-															// Delete temp files
-															closeMeNow.close();
+															try {
+																// Delete temp files
+																closeMeNow.close();
+															} catch(ThreadDeath td) {
+																throw td;
+															} catch(Throwable t) {
+																logger.log(Level.SEVERE, null, t);
+															}
 														}
-													} catch(RuntimeException | IOException | InterruptedException | ExecutionException e) {
-														logger.log(Level.SEVERE, null, e);
+													} catch(InterruptedException e) {
+														logger.log(Level.FINE, null, e);
+														Thread.currentThread().interrupt();
+													} catch(ThreadDeath td) {
+														throw td;
+													} catch(Throwable t) {
+														logger.log(Level.SEVERE, null, t);
 													}
 												});
 												try {
 													tempFileContext = new TempFileContext();
-												} catch(SecurityException e) {
-													logger.log(Level.WARNING, null, e);
+												} catch(ThreadDeath td) {
+													throw td;
+												} catch(Throwable t) {
+													logger.log(Level.WARNING, null, t);
 													tempFileContext = null;
 												}
 											}
@@ -247,29 +272,69 @@ public class HttpSocket extends AbstractSocket {
 									}
 								}
 							} finally {
-								if(tempFileContext != null) tempFileContext.close();
+								if(tempFileContext != null) {
+									try {
+										tempFileContext.close();
+									} catch(ThreadDeath td) {
+										throw td;
+									} catch(Throwable t) {
+										logger.log(Level.WARNING, null, t);
+									}
+								}
 							}
-						} catch(Exception exc) {
-							if(!isClosed()) callOnError(exc);
+						} catch(ThreadDeath td) {
+							throw td;
+						} catch(Throwable t) {
+							if(!isClosed()) callOnError(t);
 						} finally {
 							try {
 								close();
-							} catch(IOException e) {
-								logger.log(Level.SEVERE, null, e);
+							} catch(ThreadDeath td) {
+								throw td;
+							} catch(Throwable t) {
+								logger.log(Level.SEVERE, null, t);
 							}
 						}
 					});
 				}
-				if(onStart!=null) onStart.call(HttpSocket.this);
-			} catch(Exception exc) {
-				if(onError!=null) onError.call(exc);
+				if(onStart != null) {
+					logger.log(Level.FINE, "Calling onStart: {0}", HttpSocket.this);
+					try {
+						onStart.call(HttpSocket.this);
+					} catch(ThreadDeath td) {
+						throw td;
+					} catch(Throwable t) {
+						logger.log(Level.SEVERE, null, t);
+					}
+				} else {
+					logger.log(Level.FINE, "No onStart: {0}", HttpSocket.this);
+				}
+			} catch(ThreadDeath td) {
+				throw td;
+			} catch(Throwable t) {
+				if(onError != null) {
+					logger.log(Level.FINE, "Calling onError", t);
+					try {
+						onError.call(t);
+					} catch(ThreadDeath td) {
+						throw td;
+					} catch(Throwable t2) {
+						logger.log(Level.SEVERE, null, t2);
+					}
+				} else {
+					logger.log(Level.FINE, "No onError", t);
+				}
 			}
 		});
 	}
 
 	@Override
+	@SuppressWarnings({"UseSpecificCatch", "TooBroadCatch"})
 	protected void sendMessagesImpl(Collection<? extends Message> messages) {
-		if(DEBUG) System.err.println("DEBUG: HttpSocket: sendMessagesImpl: enqueuing " + messages.size() + " messages");
+		if(logger.isLoggable(Level.FINEST)) {
+			int size = messages.size();
+			logger.log(Level.FINEST, "Enqueuing {0} {1}", new Object[]{size, (size == 1) ? "message" : "messages"});
+		}
 		synchronized(lock) {
 			// Enqueue asynchronous write
 			boolean isFirst;
@@ -281,7 +346,7 @@ public class HttpSocket extends AbstractSocket {
 			}
 			outQueue.addAll(messages);
 			if(isFirst) {
-				if(DEBUG) System.err.println("DEBUG: HttpSocket: sendMessagesImpl: submitting runnable");
+				logger.log(Level.FINEST, "Submitting runnable");
 				// When the queue is first created, we submit the queue runner to the executor for queue processing
 				// There is only one executor per queue, and on queue per socket
 				executors.getUnbounded().submit(() -> {
@@ -291,7 +356,7 @@ public class HttpSocket extends AbstractSocket {
 							// Get all of the messages until the queue is empty
 							synchronized(lock) {
 								if(outQueue.isEmpty() && receiveConn!=null) {
-									if(DEBUG) System.err.println("DEBUG: HttpSocket: sendMessagesImpl: run: queue empty and receiveConn present, returning");
+									logger.log(Level.FINEST, "run: Queue empty and receiveConn present, returning");
 									// Remove the empty queue so a new executor will be submitted on next event
 									outQueue = null;
 									break;
@@ -302,14 +367,16 @@ public class HttpSocket extends AbstractSocket {
 							}
 							// Write the messages without holding the queue lock
 							final int size = msgs.size();
-							if(DEBUG) System.err.println("DEBUG: HttpSocket: sendMessagesImpl: run: writing " + size + " messages");
+							if(logger.isLoggable(Level.FINEST)) {
+								logger.log(Level.FINEST, "run: Writing {0} {1}", new Object[]{size, (size == 1) ? "message" : "messages"});
+							}
 							// Build request bytes
 							AoByteArrayOutputStream bout = new AoByteArrayOutputStream();
 							try {
 								try (DataOutputStream out = new DataOutputStream(bout)) {
 									out.writeBytes("action=messages&id=");
 									out.writeBytes(getId().toString());
-									if(DEBUG) System.err.println("DEBUG: HttpSocket: sendMessagesImpl: run: id=" + getId().toString());
+									logger.log(Level.FINEST, "run: id = {0}", getId());
 									out.writeBytes("&l=");
 									out.writeBytes(Integer.toString(size));
 									for(int i=0; i<size; i++) {
@@ -364,14 +431,20 @@ public class HttpSocket extends AbstractSocket {
 							}
 							msgs.clear();
 						}
-					} catch(Exception exc) {
+					} catch(ThreadDeath td) {
+						throw td;
+					} catch(Throwable t) {
 						if(!isClosed()) {
-							if(DEBUG) System.err.println("DEBUG: HttpSocket: sendMessagesImpl: run: calling onError");
-							callOnError(exc);
 							try {
-								close();
-							} catch(IOException e) {
-								logger.log(Level.SEVERE, null, e);
+								callOnError(t);
+							} finally {
+								try {
+									close();
+								} catch(ThreadDeath td) {
+									throw td;
+								} catch(Throwable t2) {
+									logger.log(Level.SEVERE, null, t2);
+								}
 							}
 						}
 					}
