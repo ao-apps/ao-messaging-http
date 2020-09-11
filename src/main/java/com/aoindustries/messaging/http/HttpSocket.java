@@ -26,6 +26,7 @@ import com.aoindustries.concurrent.Callback;
 import com.aoindustries.concurrent.Executor;
 import com.aoindustries.concurrent.Executors;
 import com.aoindustries.io.AoByteArrayOutputStream;
+import com.aoindustries.lang.Throwables;
 import com.aoindustries.messaging.Message;
 import com.aoindustries.messaging.MessageType;
 import com.aoindustries.messaging.Socket;
@@ -130,7 +131,7 @@ public class HttpSocket extends AbstractSocket {
 	}
 
 	@Override
-	@SuppressWarnings({"UseSpecificCatch", "TooBroadCatch"})
+	@SuppressWarnings({"UseSpecificCatch", "TooBroadCatch", "ThrowableResultIgnored", "AssignmentToCatchBlockParameter"})
 	protected void startImpl(
 		Callback<? super Socket> onStart,
 		Callback<? super Throwable> onError
@@ -283,6 +284,11 @@ public class HttpSocket extends AbstractSocket {
 								}
 							}
 						} catch(ThreadDeath td) {
+							try {
+								if(!isClosed()) callOnError(td);
+							} catch(Throwable t) {
+								Throwables.addSuppressed(td, t);
+							}
 							throw td;
 						} catch(Throwable t) {
 							if(!isClosed()) callOnError(t);
@@ -309,14 +315,13 @@ public class HttpSocket extends AbstractSocket {
 				} else {
 					logger.log(Level.FINE, "No onStart: {0}", HttpSocket.this);
 				}
-			} catch(ThreadDeath td) {
-				throw td;
 			} catch(Throwable t) {
 				if(onError != null) {
 					logger.log(Level.FINE, "Calling onError", t);
 					try {
 						onError.call(t);
 					} catch(ThreadDeath td) {
+						t = Throwables.addSuppressed(t, td);
 						throw td;
 					} catch(Throwable t2) {
 						logger.log(Level.SEVERE, null, t2);
@@ -324,6 +329,7 @@ public class HttpSocket extends AbstractSocket {
 				} else {
 					logger.log(Level.FINE, "No onError", t);
 				}
+				if(t instanceof ThreadDeath) throw (ThreadDeath)t;
 			}
 		});
 	}
@@ -431,8 +437,6 @@ public class HttpSocket extends AbstractSocket {
 							}
 							msgs.clear();
 						}
-					} catch(ThreadDeath td) {
-						throw td;
 					} catch(Throwable t) {
 						if(!isClosed()) {
 							try {
@@ -447,6 +451,7 @@ public class HttpSocket extends AbstractSocket {
 								}
 							}
 						}
+						if(t instanceof ThreadDeath) throw (ThreadDeath)t;
 					}
 				});
 			}
