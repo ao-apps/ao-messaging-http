@@ -287,7 +287,8 @@ public class HttpSocket extends AbstractSocket {
 							try {
 								if(!isClosed()) callOnError(td);
 							} catch(Throwable t) {
-								Throwables.addSuppressed(td, t);
+								Throwable t2 = Throwables.addSuppressed(td, t);
+								assert t2 == td;
 							}
 							throw td;
 						} catch(Throwable t) {
@@ -315,21 +316,21 @@ public class HttpSocket extends AbstractSocket {
 				} else {
 					logger.log(Level.FINE, "No onStart: {0}", HttpSocket.this);
 				}
-			} catch(Throwable t) {
+			} catch(Throwable t0) {
 				if(onError != null) {
-					logger.log(Level.FINE, "Calling onError", t);
+					logger.log(Level.FINE, "Calling onError", t0);
 					try {
-						onError.call(t);
+						onError.call(t0);
 					} catch(ThreadDeath td) {
-						t = Throwables.addSuppressed(t, td);
-						throw td;
-					} catch(Throwable t2) {
-						logger.log(Level.SEVERE, null, t2);
+						t0 = Throwables.addSuppressed(td, t0);
+						assert t0 == td;
+					} catch(Throwable t) {
+						logger.log(Level.SEVERE, null, t);
 					}
 				} else {
-					logger.log(Level.FINE, "No onError", t);
+					logger.log(Level.FINE, "No onError", t0);
 				}
-				if(t instanceof ThreadDeath) throw (ThreadDeath)t;
+				if(t0 instanceof ThreadDeath) throw (ThreadDeath)t0;
 			}
 		});
 	}
