@@ -1,6 +1,6 @@
 /*
  * ao-messaging-http - Asynchronous bidirectional messaging over HTTP.
- * Copyright (C) 2014, 2015, 2016, 2017, 2018, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -77,7 +77,7 @@ public class HttpSocket extends AbstractSocket {
 	/** Server should normally respond within 60 seconds even if no data coming back. */
 	public static final int READ_TIMEOUT = 2 * 60 * 1000;
 
-	private final Map<Long,Message> inQueue = new HashMap<>();
+	private final Map<Long, Message> inQueue = new HashMap<>();
 	private long inSeq = 1; // Synchronized on inQueue
 
 	private final Object lock = new Object();
