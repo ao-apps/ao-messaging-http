@@ -403,7 +403,7 @@ public class HttpSocket extends AbstractSocket {
 										out.writeBytes("&m");
 										out.writeBytes(iString);
 										out.write('=');
-										out.writeBytes(URLEncoder.encode(message.encodeAsString(), ENCODING.name()));
+										out.writeBytes(URLEncoder.encode(message.encodeAsString(), ENCODING));
 									}
 								}
 							} finally {
