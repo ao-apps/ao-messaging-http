@@ -25,29 +25,29 @@ along with ao-messaging-http.  If not, see <http://www.gnu.org/licenses />.
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.aoindustries</groupId><artifactId>ao-oss-parent</artifactId><version>1.16.0-SNAPSHOT</version>
-		<relativePath>../../ao-oss-parent/pom.xml</relativePath>
+		<groupId>com.aoapps</groupId><artifactId>ao-oss-parent</artifactId><version>1.16.0-SNAPSHOT</version>
+		<relativePath>../../parent/pom.xml</relativePath>
 	</parent>
 
-	<groupId>com.aoindustries</groupId><artifactId>ao-messaging-http</artifactId><version>2.1.0-SNAPSHOT</version>
+	<groupId>com.aoapps</groupId><artifactId>ao-messaging-http</artifactId><version>2.1.0-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 
 	<properties>
-		<javadoc.breadcrumbs><![CDATA[<a target="${javadoc.target}" href="https://aoindustries.com/ao-messaging/">AO Messaging</a>
-/ <a target="${javadoc.target}" href="${project.url}">${shortTitle}</a>]]></javadoc.breadcrumbs>
-		<shortTitle>HTTP</shortTitle>
+		<javadoc.breadcrumbs><![CDATA[<a target="${javadoc.target}" href="https://oss.aoapps.com/">AO OSS</a>
+/ <a target="${javadoc.target}" href="https://oss.aoapps.com/messaging/">Messaging</a>
+/ <a target="${javadoc.target}" href="${project.url}">HTTP</a>]]></javadoc.breadcrumbs>
 		<javadoc.modules><![CDATA[<div style="float:left; margin: 0 1em">
 			<h2 style="margin-top: 0em">Modules</h2>
 			<ul>
-				<li><a target="${javadoc.target}" href="https://aoindustries.com/ao-messaging/http/client/">AO Messaging HTTP Client</a></li>
-				<li><a target="${javadoc.target}" href="https://aoindustries.com/ao-messaging/http/client-js/">AO Messaging HTTP Client JS</a></li>
-				<li><a target="${javadoc.target}" href="https://aoindustries.com/ao-messaging/http/servlet/">AO Messaging HTTP Servlet</a></li>
+				<li><a target="${javadoc.target}" href="https://oss.aoapps.com/messaging/http/client/">AO Messaging HTTP Client</a></li>
+				<li><a target="${javadoc.target}" href="https://oss.aoapps.com/messaging/http/client-js/">AO Messaging HTTP Client JS</a></li>
+				<li><a target="${javadoc.target}" href="https://oss.aoapps.com/messaging/http/servlet/">AO Messaging HTTP Servlet</a></li>
 			</ul>
 		</div>]]></javadoc.modules>
 	</properties>
 
 	<name>AO Messaging HTTP</name>
-	<url>https://aoindustries.com/ao-messaging/http/</url>
+	<url>https://oss.aoapps.com/messaging/http/</url>
 	<description>Asynchronous bidirectional messaging over HTTP.</description>
 	<inceptionYear>2014</inceptionYear>
 
@@ -100,34 +100,34 @@ along with ao-messaging-http.  If not, see <http://www.gnu.org/licenses />.
 									<artifactItems>
 										<!-- Direct -->
 										<artifactItem>
-											<groupId>com.aoindustries</groupId><artifactId>ao-concurrent</artifactId><classifier>javadoc</classifier>
+											<groupId>com.aoapps</groupId><artifactId>ao-concurrent</artifactId><classifier>javadoc</classifier>
 											<includes>element-list, package-list</includes>
-											<outputDirectory>${project.build.directory}/offlineLinks/com.aoindustries/ao-concurrent</outputDirectory>
+											<outputDirectory>${project.build.directory}/offlineLinks/com.aoapps/ao-concurrent</outputDirectory>
 										</artifactItem>
 										<artifactItem>
-											<groupId>com.aoindustries</groupId><artifactId>ao-lang</artifactId><classifier>javadoc</classifier>
+											<groupId>com.aoapps</groupId><artifactId>ao-lang</artifactId><classifier>javadoc</classifier>
 											<includes>element-list, package-list</includes>
-											<outputDirectory>${project.build.directory}/offlineLinks/com.aoindustries/ao-lang</outputDirectory>
+											<outputDirectory>${project.build.directory}/offlineLinks/com.aoapps/ao-lang</outputDirectory>
 										</artifactItem>
 										<artifactItem>
-											<groupId>com.aoindustries</groupId><artifactId>ao-messaging-api</artifactId><classifier>javadoc</classifier>
+											<groupId>com.aoapps</groupId><artifactId>ao-messaging-api</artifactId><classifier>javadoc</classifier>
 											<includes>element-list, package-list</includes>
-											<outputDirectory>${project.build.directory}/offlineLinks/com.aoindustries/ao-messaging-api</outputDirectory>
+											<outputDirectory>${project.build.directory}/offlineLinks/com.aoapps/ao-messaging-api</outputDirectory>
 										</artifactItem>
 										<artifactItem>
-											<groupId>com.aoindustries</groupId><artifactId>ao-messaging-base</artifactId><classifier>javadoc</classifier>
+											<groupId>com.aoapps</groupId><artifactId>ao-messaging-base</artifactId><classifier>javadoc</classifier>
 											<includes>element-list, package-list</includes>
-											<outputDirectory>${project.build.directory}/offlineLinks/com.aoindustries/ao-messaging-base</outputDirectory>
+											<outputDirectory>${project.build.directory}/offlineLinks/com.aoapps/ao-messaging-base</outputDirectory>
 										</artifactItem>
 										<artifactItem>
-											<groupId>com.aoindustries</groupId><artifactId>ao-security</artifactId><classifier>javadoc</classifier>
+											<groupId>com.aoapps</groupId><artifactId>ao-security</artifactId><classifier>javadoc</classifier>
 											<includes>element-list, package-list</includes>
-											<outputDirectory>${project.build.directory}/offlineLinks/com.aoindustries/ao-security</outputDirectory>
+											<outputDirectory>${project.build.directory}/offlineLinks/com.aoapps/ao-security</outputDirectory>
 										</artifactItem>
 										<artifactItem>
-											<groupId>com.aoindustries</groupId><artifactId>ao-tempfiles</artifactId><classifier>javadoc</classifier>
+											<groupId>com.aoapps</groupId><artifactId>ao-tempfiles</artifactId><classifier>javadoc</classifier>
 											<includes>element-list, package-list</includes>
-											<outputDirectory>${project.build.directory}/offlineLinks/com.aoindustries/ao-tempfiles</outputDirectory>
+											<outputDirectory>${project.build.directory}/offlineLinks/com.aoapps/ao-tempfiles</outputDirectory>
 										</artifactItem>
 									</artifactItems>
 								</configuration>
@@ -140,33 +140,33 @@ along with ao-messaging-http.  If not, see <http://www.gnu.org/licenses />.
 							<offlineLinks>
 								<!-- Direct -->
 								<offlineLink>
-									<url>https://aoindustries.com/ao-concurrent/apidocs/</url>
-									<location>${project.build.directory}/offlineLinks/com.aoindustries/ao-concurrent</location>
+									<url>https://oss.aoapps.com/concurrent/apidocs/</url>
+									<location>${project.build.directory}/offlineLinks/com.aoapps/ao-concurrent</location>
 								</offlineLink>
 								<offlineLink>
-									<url>https://aoindustries.com/ao-lang/apidocs/</url>
-									<location>${project.build.directory}/offlineLinks/com.aoindustries/ao-lang</location>
+									<url>https://oss.aoapps.com/lang/apidocs/</url>
+									<location>${project.build.directory}/offlineLinks/com.aoapps/ao-lang</location>
 								</offlineLink>
 								<offlineLink>
-									<url>https://aoindustries.com/ao-messaging/api/apidocs/</url>
-									<location>${project.build.directory}/offlineLinks/com.aoindustries/ao-messaging-api</location>
+									<url>https://oss.aoapps.com/messaging/api/apidocs/</url>
+									<location>${project.build.directory}/offlineLinks/com.aoapps/ao-messaging-api</location>
 								</offlineLink>
 								<offlineLink>
-									<url>https://aoindustries.com/ao-messaging/base/apidocs/</url>
-									<location>${project.build.directory}/offlineLinks/com.aoindustries/ao-messaging-base</location>
+									<url>https://oss.aoapps.com/messaging/base/apidocs/</url>
+									<location>${project.build.directory}/offlineLinks/com.aoapps/ao-messaging-base</location>
 								</offlineLink>
 								<offlineLink>
-									<url>https://aoindustries.com/ao-security/apidocs/</url>
-									<location>${project.build.directory}/offlineLinks/com.aoindustries/ao-security</location>
+									<url>https://oss.aoapps.com/security/apidocs/</url>
+									<location>${project.build.directory}/offlineLinks/com.aoapps/ao-security</location>
 								</offlineLink>
 								<offlineLink>
-									<url>https://aoindustries.com/ao-tempfiles/apidocs/</url>
-									<location>${project.build.directory}/offlineLinks/com.aoindustries/ao-tempfiles</location>
+									<url>https://oss.aoapps.com/tempfiles/apidocs/</url>
+									<location>${project.build.directory}/offlineLinks/com.aoapps/ao-tempfiles</location>
 								</offlineLink>
 								<!-- Java SE -->
 								<offlineLink>
 									<url>${javadoc.link.javase}</url>
-									<location>${project.build.directory}/offlineLinks/com/aoindustries/javadoc/offline/javase/${javase.release}</location>
+									<location>${project.build.directory}/offlineLinks/com/aoapps/javadoc/offline/javase/${javase.release}</location>
 								</offlineLink>
 							</offlineLinks>
 						</configuration>
@@ -180,29 +180,29 @@ along with ao-messaging-http.  If not, see <http://www.gnu.org/licenses />.
 		<dependencies>
 			<!-- Direct -->
 			<dependency>
-				<groupId>com.aoindustries</groupId><artifactId>ao-concurrent</artifactId><version>3.1.1-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
+				<groupId>com.aoapps</groupId><artifactId>ao-concurrent</artifactId><version>3.1.1-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
 			<dependency>
-				<groupId>com.aoindustries</groupId><artifactId>ao-lang</artifactId><version>4.17.1-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
+				<groupId>com.aoapps</groupId><artifactId>ao-lang</artifactId><version>4.17.1-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
 			<dependency>
-				<groupId>com.aoindustries</groupId><artifactId>ao-messaging-api</artifactId><version>2.1.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
+				<groupId>com.aoapps</groupId><artifactId>ao-messaging-api</artifactId><version>2.1.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
 			<dependency>
-				<groupId>com.aoindustries</groupId><artifactId>ao-messaging-base</artifactId><version>2.1.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
+				<groupId>com.aoapps</groupId><artifactId>ao-messaging-base</artifactId><version>2.1.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
 			<dependency>
-				<groupId>com.aoindustries</groupId><artifactId>ao-security</artifactId><version>2.3.1-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
+				<groupId>com.aoapps</groupId><artifactId>ao-security</artifactId><version>2.3.1-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
 			<dependency>
-				<groupId>com.aoindustries</groupId><artifactId>ao-tempfiles</artifactId><version>2.0.1-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
+				<groupId>com.aoapps</groupId><artifactId>ao-tempfiles</artifactId><version>2.0.1-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
 			<!-- Transitive -->
 			<dependency>
-				<groupId>com.aoindustries</groupId><artifactId>ao-collections</artifactId><version>1.2.1-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
+				<groupId>com.aoapps</groupId><artifactId>ao-collections</artifactId><version>1.2.1-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
 			<dependency>
-				<groupId>com.aoindustries</groupId><artifactId>aocode-public</artifactId><version>4.9.2-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
+				<groupId>com.aoapps</groupId><artifactId>ao-hodgepodge</artifactId><version>4.9.2-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.commons</groupId><artifactId>commons-lang3</artifactId><version>3.12.0</version>
@@ -213,22 +213,22 @@ along with ao-messaging-http.  If not, see <http://www.gnu.org/licenses />.
 	<dependencies>
 		<!-- Direct -->
 		<dependency>
-			<groupId>com.aoindustries</groupId><artifactId>ao-concurrent</artifactId>
+			<groupId>com.aoapps</groupId><artifactId>ao-concurrent</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.aoindustries</groupId><artifactId>ao-lang</artifactId>
+			<groupId>com.aoapps</groupId><artifactId>ao-lang</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.aoindustries</groupId><artifactId>ao-messaging-api</artifactId>
+			<groupId>com.aoapps</groupId><artifactId>ao-messaging-api</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.aoindustries</groupId><artifactId>ao-messaging-base</artifactId>
+			<groupId>com.aoapps</groupId><artifactId>ao-messaging-base</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.aoindustries</groupId><artifactId>ao-security</artifactId>
+			<groupId>com.aoapps</groupId><artifactId>ao-security</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.aoindustries</groupId><artifactId>ao-tempfiles</artifactId>
+			<groupId>com.aoapps</groupId><artifactId>ao-tempfiles</artifactId>
 		</dependency>
 	</dependencies>
 </project>
