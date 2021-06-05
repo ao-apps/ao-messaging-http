@@ -1,6 +1,6 @@
 /*
  * ao-messaging-http - Asynchronous bidirectional messaging over HTTP.
- * Copyright (C) 2014, 2015, 2016  AO Industries, Inc.
+ * Copyright (C) 2014, 2015, 2016, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -20,18 +20,42 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with ao-messaging-http.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aoindustries.messaging.http;
+package com.aoapps.messaging.http;
 
-import com.aoindustries.messaging.base.AbstractSocketContext;
-import javax.xml.parsers.DocumentBuilderFactory;
+import java.net.SocketAddress;
+import java.net.URL;
 
 /**
- * Bi-directional messaging over HTTP.
+ * A URL as a socket address.
  */
-abstract public class HttpSocketContext extends AbstractSocketContext<HttpSocket> {
+public class UrlSocketAddress extends SocketAddress {
 
-	final protected DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+	private static final long serialVersionUID = 1L;
 
-	public HttpSocketContext() {
+	private final URL url;
+
+	public UrlSocketAddress(URL url) {
+		this.url = url;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof UrlSocketAddress)) return false;
+		UrlSocketAddress other = (UrlSocketAddress)obj;
+		return url.toExternalForm().equals(other.url.toExternalForm());
+	}
+
+	@Override
+	public int hashCode() {
+		return url.toExternalForm().hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return url.toExternalForm();
+	}
+
+	public URL getUrl() {
+		return url;
 	}
 }

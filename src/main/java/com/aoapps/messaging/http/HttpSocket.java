@@ -20,22 +20,22 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with ao-messaging-http.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aoindustries.messaging.http;
+package com.aoapps.messaging.http;
 
-import com.aoindustries.concurrent.Callback;
-import com.aoindustries.concurrent.Executor;
-import com.aoindustries.concurrent.Executors;
-import com.aoindustries.io.AoByteArrayOutputStream;
-import com.aoindustries.lang.Throwables;
-import com.aoindustries.messaging.Message;
-import com.aoindustries.messaging.MessageType;
-import com.aoindustries.messaging.Socket;
-import com.aoindustries.messaging.base.AbstractSocket;
-import com.aoindustries.security.Identifier;
-import com.aoindustries.tempfiles.TempFileContext;
-import com.aoindustries.util.AtomicSequence;
-import com.aoindustries.util.Sequence;
-import com.aoindustries.xml.XmlUtils;
+import com.aoapps.concurrent.Callback;
+import com.aoapps.concurrent.Executor;
+import com.aoapps.concurrent.Executors;
+import com.aoapps.lang.Throwables;
+import com.aoapps.lang.io.AoByteArrayOutputStream;
+import com.aoapps.lang.util.AtomicSequence;
+import com.aoapps.lang.util.Sequence;
+import com.aoapps.lang.xml.XmlUtils;
+import com.aoapps.messaging.Message;
+import com.aoapps.messaging.MessageType;
+import com.aoapps.messaging.Socket;
+import com.aoapps.messaging.base.AbstractSocket;
+import com.aoapps.security.Identifier;
+import com.aoapps.tempfiles.TempFileContext;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
