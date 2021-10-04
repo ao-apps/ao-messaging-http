@@ -28,9 +28,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 /**
  * Bi-directional messaging over HTTP.
  */
-abstract public class HttpSocketContext extends AbstractSocketContext<HttpSocket> {
+public abstract class HttpSocketContext extends AbstractSocketContext<HttpSocket> {
 
-	final protected DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+	protected final DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 
 	public HttpSocketContext() {
 	}
