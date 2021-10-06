@@ -23,15 +23,28 @@
 package com.aoapps.messaging.http;
 
 import com.aoapps.messaging.base.AbstractSocketContext;
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * Bi-directional messaging over HTTP.
  */
 public abstract class HttpSocketContext extends AbstractSocketContext<HttpSocket> {
 
-	protected final DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+	protected final DocumentBuilderFactory builderFactory;
 
 	public HttpSocketContext() {
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		try {
+			dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+		} catch(ParserConfigurationException e) {
+			throw new AssertionError("All implementations are required to support the javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING feature.", e);
+		}
+		// See https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.md#java
+		// See https://rules.sonarsource.com/java/RSPEC-2755
+		dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+		dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+		builderFactory = dbf;
 	}
 }
