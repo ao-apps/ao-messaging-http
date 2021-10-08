@@ -34,7 +34,7 @@ public abstract class HttpSocketContext extends AbstractSocketContext<HttpSocket
 
 	protected final DocumentBuilderFactory builderFactory;
 
-	public HttpSocketContext() {
+	protected HttpSocketContext() {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		try {
 			dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
