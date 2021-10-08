@@ -268,7 +268,7 @@ public class HttpSocket extends AbstractSocket {
 										synchronized(lock) {
 											assert _receiveConn == HttpSocket.this.receiveConn;
 											HttpSocket.this.receiveConn = null;
-											lock.notify();
+											lock.notifyAll();
 										}
 									}
 								}
@@ -434,7 +434,7 @@ public class HttpSocket extends AbstractSocket {
 									lock.wait();
 								}
 								receiveConn = conn;
-								lock.notify();
+								lock.notifyAll();
 							}
 							msgs.clear();
 						}
