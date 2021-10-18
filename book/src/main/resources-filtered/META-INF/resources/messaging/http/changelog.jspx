@@ -37,7 +37,7 @@ along with ao-messaging-http.  If not, see <http://www.gnu.org/licenses />.
 		shortTitle="Changelog"
 		tocLevels="1"
 		datePublished="2016-10-29T20:41:14-05:00"
-		dateModified="2021-10-07T08:43:15-05:00"
+		dateModified="2021-10-18T18:07:03-05:00"
 	>
 		<c:if test="${fn:endsWith('@{project.version}', '-SNAPSHOT') and !fn:endsWith('@{project.version}', '-POST-SNAPSHOT')}">
 			<changelog:release
@@ -47,13 +47,22 @@ along with ao-messaging-http.  If not, see <http://www.gnu.org/licenses />.
 				artifactId="@{documented.artifactId}"
 				repository="@{nexusUrl}content/repositories/snapshots/"
 				scmUrl="@{project.scm.url}"
-			>
-				<ul>
-					<li>Improved XML parser security.</li>
-					<li><code>notify()</code> replaced with <code>notifyAll()</code> since more than one thread can be waiting.</li>
-				</ul>
-			</changelog:release>
+			/>
 		</c:if>
+
+		<changelog:release
+			projectName="@{documented.name}"
+			version="3.0.1"
+			datePublished="2021-10-18T18:07:03-05:00"
+			groupId="@{project.groupId}"
+			artifactId="@{documented.artifactId}"
+			scmUrl="@{project.scm.url}"
+		>
+			<ul>
+				<li>Improved XML parser security.</li>
+				<li><code>notify()</code> replaced with <code>notifyAll()</code> since more than one thread can be waiting.</li>
+			</ul>
+		</changelog:release>
 
 		<changelog:release
 			projectName="@{documented.name}"
