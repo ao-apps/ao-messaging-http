@@ -31,32 +31,34 @@ import java.net.URL;
  */
 public class UrlSocketAddress extends SocketAddress {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	private final URL url;
+  private final URL url;
 
-	public UrlSocketAddress(URL url) {
-		this.url = url;
-	}
+  public UrlSocketAddress(URL url) {
+    this.url = url;
+  }
 
-	@Override
-	public boolean equals(Object obj) {
-		if(!(obj instanceof UrlSocketAddress)) return false;
-		UrlSocketAddress other = (UrlSocketAddress)obj;
-		return url.toExternalForm().equals(other.url.toExternalForm());
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof UrlSocketAddress)) {
+      return false;
+    }
+    UrlSocketAddress other = (UrlSocketAddress)obj;
+    return url.toExternalForm().equals(other.url.toExternalForm());
+  }
 
-	@Override
-	public int hashCode() {
-		return url.toExternalForm().hashCode();
-	}
+  @Override
+  public int hashCode() {
+    return url.toExternalForm().hashCode();
+  }
 
-	@Override
-	public String toString() {
-		return url.toExternalForm();
-	}
+  @Override
+  public String toString() {
+    return url.toExternalForm();
+  }
 
-	public URL getUrl() {
-		return url;
-	}
+  public URL getUrl() {
+    return url;
+  }
 }

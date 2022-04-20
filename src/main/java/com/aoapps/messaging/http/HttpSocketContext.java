@@ -33,19 +33,19 @@ import javax.xml.parsers.ParserConfigurationException;
  */
 public abstract class HttpSocketContext extends AbstractSocketContext<HttpSocket> {
 
-	protected final DocumentBuilderFactory builderFactory;
+  protected final DocumentBuilderFactory builderFactory;
 
-	protected HttpSocketContext() {
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		try {
-			dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-		} catch(ParserConfigurationException e) {
-			throw new AssertionError("All implementations are required to support the javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING feature.", e);
-		}
-		// See https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.md#java
-		// See https://rules.sonarsource.com/java/RSPEC-2755
-		dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-		dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
-		builderFactory = dbf;
-	}
+  protected HttpSocketContext() {
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    try {
+      dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+    } catch (ParserConfigurationException e) {
+      throw new AssertionError("All implementations are required to support the javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING feature.", e);
+    }
+    // See https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.md#java
+    // See https://rules.sonarsource.com/java/RSPEC-2755
+    dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+    dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+    builderFactory = dbf;
+  }
 }
