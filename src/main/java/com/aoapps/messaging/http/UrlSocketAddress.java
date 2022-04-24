@@ -44,7 +44,7 @@ public class UrlSocketAddress extends SocketAddress {
     if (!(obj instanceof UrlSocketAddress)) {
       return false;
     }
-    UrlSocketAddress other = (UrlSocketAddress)obj;
+    UrlSocketAddress other = (UrlSocketAddress) obj;
     return url.toExternalForm().equals(other.url.toExternalForm());
   }
 

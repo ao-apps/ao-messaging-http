@@ -95,16 +95,16 @@ public class HttpSocket extends AbstractSocket {
   private HttpURLConnection receiveConn;
 
   public HttpSocket(
-    HttpSocketContext socketContext,
-    Identifier id,
-    long connectTime,
-    URL endpoint
+      HttpSocketContext socketContext,
+      Identifier id,
+      long connectTime,
+      URL endpoint
   ) {
     super(
-      socketContext,
-      id,
-      connectTime,
-      new UrlSocketAddress(endpoint)
+        socketContext,
+        id,
+        connectTime,
+        new UrlSocketAddress(endpoint)
     );
     this.socketContext = socketContext;
     this.endpoint = endpoint;
@@ -134,8 +134,8 @@ public class HttpSocket extends AbstractSocket {
   @Override
   @SuppressWarnings({"UseSpecificCatch", "TooBroadCatch", "ThrowableResultIgnored", "AssignmentToCatchBlockParameter"})
   protected void startImpl(
-    Callback<? super Socket> onStart,
-    Callback<? super Throwable> onError
+      Callback<? super Socket> onStart,
+      Callback<? super Throwable> onError
   ) throws IllegalStateException {
     executors.getUnbounded().submit(() -> {
       try {
@@ -214,7 +214,7 @@ public class HttpSocket extends AbstractSocket {
                           if (!(firstChild instanceof Text)) {
                             throw new IllegalArgumentException("Child of message is not a Text node");
                           }
-                          encodedMessage = ((Text)firstChild).getTextContent();
+                          encodedMessage = ((Text) firstChild).getTextContent();
                         }
                         // Decode and add
                         if (inQueue.put(seq, type.decode(encodedMessage, tempFileContext)) != null) {
@@ -346,7 +346,7 @@ public class HttpSocket extends AbstractSocket {
           logger.log(Level.FINE, "No onError", t0);
         }
         if (t0 instanceof ThreadDeath) {
-          throw (ThreadDeath)t0;
+          throw (ThreadDeath) t0;
         }
       }
     });
@@ -403,7 +403,7 @@ public class HttpSocket extends AbstractSocket {
                   logger.log(Level.FINEST, "run: id = {0}", getId());
                   out.writeBytes("&l=");
                   out.writeBytes(Integer.toString(size));
-                  for (int i=0; i<size; i++) {
+                  for (int i = 0; i < size; i++) {
                     String iString = Integer.toString(i);
                     Message message = msgs.get(i);
                     // Sequence
@@ -426,7 +426,7 @@ public class HttpSocket extends AbstractSocket {
               } finally {
                 bout.close();
               }
-              HttpURLConnection conn = (HttpURLConnection)endpoint.openConnection();
+              HttpURLConnection conn = (HttpURLConnection) endpoint.openConnection();
               conn.setAllowUserInteraction(false);
               conn.setConnectTimeout(CONNECT_TIMEOUT);
               conn.setDoOutput(true);
@@ -472,7 +472,7 @@ public class HttpSocket extends AbstractSocket {
               }
             }
             if (t instanceof ThreadDeath) {
-              throw (ThreadDeath)t;
+              throw (ThreadDeath) t;
             }
           }
         });
