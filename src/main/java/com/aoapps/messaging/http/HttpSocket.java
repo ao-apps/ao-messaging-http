@@ -91,9 +91,14 @@ public class HttpSocket extends AbstractSocket {
   private final HttpSocketContext socketContext;
   private final URL endpoint;
 
-  /** The HttpURLConnection that is currently waiting for return traffic */
+  /**
+   * The HttpURLConnection that is currently waiting for return traffic.
+   */
   private HttpURLConnection receiveConn;
 
+  /**
+   * Creates a new HTTP(S) socket.
+   */
   public HttpSocket(
       HttpSocketContext socketContext,
       Identifier id,
@@ -169,15 +174,15 @@ public class HttpSocket extends AbstractSocket {
               }
               try {
                 while (!isClosed()) {
-                  HttpURLConnection _receiveConn = null;
+                  HttpURLConnection myReceiveConn = null;
                   synchronized (lock) {
                     // Wait until a connection is ready
-                    while (_receiveConn == null) {
+                    while (myReceiveConn == null) {
                       if (isClosed()) {
                         return;
                       }
-                      _receiveConn = HttpSocket.this.receiveConn;
-                      if (_receiveConn == null) {
+                      myReceiveConn = HttpSocket.this.receiveConn;
+                      if (myReceiveConn == null) {
                         // No receive connection - kick-out an empty set of messages
                         Collection<? extends Message> kicker = Collections.emptyList();
                         sendMessagesImpl(kicker);
@@ -187,13 +192,13 @@ public class HttpSocket extends AbstractSocket {
                   }
                   try {
                     // Get response
-                    int responseCode = _receiveConn.getResponseCode();
+                    int responseCode = myReceiveConn.getResponseCode();
                     logger.log(Level.FINEST, "receive: Got response: {0}", responseCode);
                     if (responseCode != 200) {
                       throw new IOException("Unexpect response code: " + responseCode);
                     }
                     DocumentBuilder builder = socketContext.builderFactory.newDocumentBuilder();
-                    Element document = builder.parse(_receiveConn.getInputStream()).getDocumentElement();
+                    Element document = builder.parse(myReceiveConn.getInputStream()).getDocumentElement();
                     if (!"messages".equals(document.getNodeName())) {
                       throw new IOException("Unexpected root node name: " + document.getNodeName());
                     }
@@ -276,7 +281,7 @@ public class HttpSocket extends AbstractSocket {
                     }
                   } finally {
                     synchronized (lock) {
-                      assert _receiveConn == HttpSocket.this.receiveConn;
+                      assert myReceiveConn == HttpSocket.this.receiveConn;
                       HttpSocket.this.receiveConn = null;
                       lock.notifyAll();
                     }
@@ -404,21 +409,21 @@ public class HttpSocket extends AbstractSocket {
                   out.writeBytes("&l=");
                   out.writeBytes(Integer.toString(size));
                   for (int i = 0; i < size; i++) {
-                    String iString = Integer.toString(i);
+                    String istring = Integer.toString(i);
                     Message message = msgs.get(i);
                     // Sequence
                     out.writeBytes("&s");
-                    out.writeBytes(iString);
+                    out.writeBytes(istring);
                     out.write('=');
                     out.writeBytes(Long.toString(outSeq.getNextSequenceValue()));
                     // Type
                     out.writeBytes("&t");
-                    out.writeBytes(iString);
+                    out.writeBytes(istring);
                     out.write('=');
                     out.write(message.getMessageType().getTypeChar());
                     // Message
                     out.writeBytes("&m");
-                    out.writeBytes(iString);
+                    out.writeBytes(istring);
                     out.write('=');
                     out.writeBytes(URLEncoder.encode(message.encodeAsString(), ENCODING.name()));
                   }
