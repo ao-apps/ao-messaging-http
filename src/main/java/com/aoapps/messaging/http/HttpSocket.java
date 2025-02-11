@@ -1,6 +1,6 @@
 /*
  * ao-messaging-http - Asynchronous bidirectional messaging over HTTP.
- * Copyright (C) 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2025  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -118,6 +118,7 @@ public class HttpSocket extends AbstractSocket {
   }
 
   @Override
+  @SuppressWarnings("ConvertToTryWithResources")
   public void close() throws IOException {
     try {
       super.close();
