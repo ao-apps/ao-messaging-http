@@ -220,7 +220,7 @@ public class HttpSocket extends AbstractSocket {
                     synchronized (inQueue) {
                       for (Element messageElem : XmlUtils.iterableChildElementsByTagName(document, "message")) {
                         // Get the sequence
-                        Long seq = Long.parseLong(messageElem.getAttribute("seq"));
+                        Long seq = Long.valueOf(messageElem.getAttribute("seq"));
                         // Get the type
                         MessageType type = MessageType.getFromTypeChar(messageElem.getAttribute("type").charAt(0));
                         // Get the message string
