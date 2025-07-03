@@ -22,7 +22,7 @@ Asynchronous bidirectional messaging over HTTP.
 * [Project Home](https://oss.aoapps.com/messaging/http/)
 * [Changelog](https://oss.aoapps.com/messaging/http/changelog)
 * [API Docs](https://oss.aoapps.com/messaging/http/apidocs/)
-* [Maven Central Repository](https://central.sonatype.com/artifact/com.aoapps/ao-messaging-http)
+* [Central Repository](https://central.sonatype.com/artifact/com.aoapps/ao-messaging-http)
 * [GitHub](https://github.com/ao-apps/ao-messaging-http)
 
 ## Modules
