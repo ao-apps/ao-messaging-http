@@ -1,6 +1,6 @@
 /*
  * ao-messaging-http - Asynchronous bidirectional messaging over HTTP.
- * Copyright (C) 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2025  AO Industries, Inc.
+ * Copyright (C) 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2025, 2026  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -370,7 +370,7 @@ public class HttpSocket extends AbstractSocket {
   protected void sendMessagesImpl(Collection<? extends Message> messages) {
     if (logger.isLoggable(Level.FINEST)) {
       int size = messages.size();
-      logger.log(Level.FINEST, "Enqueuing {0} {1}", new Object[]{size, (size == 1) ? "message" : "messages"});
+      logger.log(Level.FINEST, "Enqueuing {0} {1}", new Object[] {size, (size == 1) ? "message" : "messages"});
     }
     synchronized (lock) {
       // Enqueue asynchronous write
@@ -405,7 +405,7 @@ public class HttpSocket extends AbstractSocket {
               // Write the messages without holding the queue lock
               final int size = msgs.size();
               if (logger.isLoggable(Level.FINEST)) {
-                logger.log(Level.FINEST, "run: Writing {0} {1}", new Object[]{size, (size == 1) ? "message" : "messages"});
+                logger.log(Level.FINEST, "run: Writing {0} {1}", new Object[] {size, (size == 1) ? "message" : "messages"});
               }
               // Build request bytes
               AoByteArrayOutputStream bout = new AoByteArrayOutputStream();
